@@ -2,10 +2,13 @@
 
 void non_preemptive(int n, int AT[], int BT[]) {
     int CT[n], TAT[n], WT[n], RT[n], completed[n];
+
     for (int i = 0; i < n; i++){
         completed[i] = 0;
     }
+
     int t = 0, count = 0;
+
     while (count < n) {
         int in = -1;
         int min_bt = 9999;
@@ -21,6 +24,7 @@ void non_preemptive(int n, int AT[], int BT[]) {
                 }
             }
         }
+
         if (in != -1) {
             RT[in] = t - AT[in];
             CT[in] = t + BT[in];
@@ -35,13 +39,24 @@ void non_preemptive(int n, int AT[], int BT[]) {
             t++;
         }
     }
+
+    float avgTAT = 0, avgWT = 0, avgRT = 0;
+
     printf("\nSJF Non-Preemptive Result:\n");
     printf("Process\tAT\tBT\tCT\tTAT\tWT\tRT\n");
 
     for (int i = 0; i < n; i++) {
         printf("P%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                i + 1, AT[i], BT[i], CT[i], TAT[i], WT[i], RT[i]);
+
+        avgTAT += TAT[i];
+        avgWT += WT[i];
+        avgRT += RT[i];
     }
+
+    printf("\nAverage TAT = %.2f", avgTAT/n);
+    printf("\nAverage WT  = %.2f", avgWT/n);
+    printf("\nAverage RT  = %.2f\n", avgRT/n);
 }
 
 void preemptive(int n, int AT[], int BT[]) {
@@ -53,7 +68,9 @@ void preemptive(int n, int AT[], int BT[]) {
         completed[i] = 0;
         first_time[i] = -1;
     }
+
     int t = 0, count = 0;
+
     while (count < n) {
         int in = -1;
         int min_bt = 9999;
@@ -69,13 +86,16 @@ void preemptive(int n, int AT[], int BT[]) {
                 }
             }
         }
+
         if (in != -1) {
 
             if (first_time[in] == -1){
                 first_time[in] = t;
             }
+
             temp_BT[in]--;
             t++;
+
             if (temp_BT[in] == 0) {
                 CT[in] = t;
                 TAT[in] = CT[in] - AT[in];
@@ -90,13 +110,23 @@ void preemptive(int n, int AT[], int BT[]) {
         }
     }
 
+    float avgTAT = 0, avgWT = 0, avgRT = 0;
+
     printf("\nSJF Preemptive (SRTF) Result:\n");
     printf("Process\tAT\tBT\tCT\tTAT\tWT\tRT\n");
 
     for (int i = 0; i < n; i++) {
         printf("P%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                i + 1, AT[i], BT[i], CT[i], TAT[i], WT[i], RT[i]);
+
+        avgTAT += TAT[i];
+        avgWT += WT[i];
+        avgRT += RT[i];
     }
+
+    printf("\nAverage TAT = %.2f", avgTAT/n);
+    printf("\nAverage WT  = %.2f", avgWT/n);
+    printf("\nAverage RT  = %.2f\n", avgRT/n);
 }
 
 int main() {
@@ -125,3 +155,4 @@ int main() {
         printf("Invalid choice");
     }
 }
+
